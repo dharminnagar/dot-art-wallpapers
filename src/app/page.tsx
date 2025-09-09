@@ -1,16 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Upload, Download, Image as ImageIcon } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Download } from "lucide-react";
+import ImageUpload from "@/components/image-upload";
 
 export default function Home() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -18,7 +12,6 @@ export default function Home() {
   const [laptopWallpaperUrl, setLaptopWallpaperUrl] = useState<string>("");
   const [phoneWallpaperUrl, setPhoneWallpaperUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (file: File) => {
     // Validate file type
@@ -289,18 +282,6 @@ export default function Home() {
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFileSelect(files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="container mx-auto max-w-4xl">
@@ -316,41 +297,19 @@ export default function Home() {
 
         {/* Upload Section */}
         {!selectedFile && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Upload Your Image</CardTitle>
-              <CardDescription>
-                Upload a PNG or JPG image (transparent images preferred). Max
-                file size: 10MB
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer"
-                onClick={() => fileInputRef.current?.click()}>
-                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-lg mb-2">Drag and drop your image here</p>
-                <p className="text-muted-foreground mb-4">or click to browse</p>
-                <Button variant="outline">
-                  <ImageIcon className="w-4 h-4 mr-2" />
-                  Choose File
-                </Button>
-              </div>
-              <Input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png,image/jpeg,image/jpg"
-                onChange={(e) => {
-                  if (e.target.files?.[0]) {
-                    handleFileSelect(e.target.files[0]);
-                  }
-                }}
-                className="hidden"
-              />
-            </CardContent>
-          </Card>
+          <div className="mb-8 flex justify-center">
+            <ImageUpload
+              onFileSelect={handleFileSelect}
+              selectedFile={selectedFile}
+              onClear={() => {
+                setSelectedFile(null);
+                setPixelatedImageUrl("");
+                setLaptopWallpaperUrl("");
+                setPhoneWallpaperUrl("");
+                setIsProcessing(false);
+              }}
+            />
+          </div>
         )}
 
         {/* Processing & Preview Section */}
