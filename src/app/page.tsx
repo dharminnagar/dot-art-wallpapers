@@ -315,30 +315,20 @@ export default function Home() {
         {/* Processing & Preview Section */}
         {selectedFile && (
           <div className="space-y-6">
-            {/* File Info */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">{selectedFile.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setSelectedFile(null);
-                      setPixelatedImageUrl("");
-                      setLaptopWallpaperUrl("");
-                      setPhoneWallpaperUrl("");
-                      setIsProcessing(false);
-                    }}>
-                    Choose Different Image
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Reset Button */}
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSelectedFile(null);
+                  setPixelatedImageUrl("");
+                  setLaptopWallpaperUrl("");
+                  setPhoneWallpaperUrl("");
+                  setIsProcessing(false);
+                }}>
+                Choose Different Image
+              </Button>
+            </div>
 
             {/* Wallpaper Preview */}
             <div className="space-y-6">
