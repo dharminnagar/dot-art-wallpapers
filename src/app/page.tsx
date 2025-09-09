@@ -14,8 +14,9 @@ import { Upload, Download, Image as ImageIcon } from "lucide-react";
 
 export default function Home() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [originalImageUrl, setOriginalImageUrl] = useState<string>("");
   const [pixelatedImageUrl, setPixelatedImageUrl] = useState<string>("");
+  const [laptopWallpaperUrl, setLaptopWallpaperUrl] = useState<string>("");
+  const [phoneWallpaperUrl, setPhoneWallpaperUrl] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,7 +35,6 @@ export default function Home() {
 
     setSelectedFile(file);
     const imageUrl = URL.createObjectURL(file);
-    setOriginalImageUrl(imageUrl);
     processImage(imageUrl);
   };
 
@@ -138,6 +138,10 @@ export default function Home() {
         }
 
         setPixelatedImageUrl(canvas.toDataURL());
+
+        // Generate actual wallpapers for preview
+        generateActualWallpapers(canvas.toDataURL());
+
         setIsProcessing(false);
       };
 
@@ -145,6 +149,92 @@ export default function Home() {
     } catch (error) {
       console.error("Error processing image:", error);
       setIsProcessing(false);
+    }
+  };
+
+  const generateActualWallpapers = (dotArtDataUrl: string) => {
+    // Generate actual laptop wallpaper (full size)
+    const laptopCanvas = document.createElement("canvas");
+    const laptopCtx = laptopCanvas.getContext("2d");
+
+    // Use actual wallpaper dimensions
+    const laptopWidth = 3840;
+    const laptopHeight = 2400;
+
+    laptopCanvas.width = laptopWidth;
+    laptopCanvas.height = laptopHeight;
+
+    if (laptopCtx) {
+      laptopCtx.fillStyle = "#000000";
+      laptopCtx.fillRect(0, 0, laptopWidth, laptopHeight);
+
+      const laptopImg = new window.Image();
+      laptopImg.onload = () => {
+        const padding = laptopWidth < laptopHeight ? 100 : 200;
+        const maxWidth = laptopWidth - padding * 2;
+        const maxHeight = laptopHeight - padding * 2;
+
+        const isLaptop = laptopWidth > laptopHeight;
+        const scaleRatio = isLaptop ? 0.4 : 0.3;
+        let drawWidth = laptopImg.width * scaleRatio;
+        let drawHeight = laptopImg.height * scaleRatio;
+
+        const scaleX = maxWidth / drawWidth;
+        const scaleY = maxHeight / drawHeight;
+        const scale = Math.min(scaleX, scaleY, 1);
+
+        drawWidth = drawWidth * scale;
+        drawHeight = drawHeight * scale;
+
+        const x = (laptopWidth - drawWidth) / 2;
+        const y = (laptopHeight - drawHeight) / 2;
+
+        laptopCtx.drawImage(laptopImg, x, y, drawWidth, drawHeight);
+        setLaptopWallpaperUrl(laptopCanvas.toDataURL());
+      };
+      laptopImg.src = dotArtDataUrl;
+    }
+
+    // Generate actual phone wallpaper (full size)
+    const phoneCanvas = document.createElement("canvas");
+    const phoneCtx = phoneCanvas.getContext("2d");
+
+    // Use actual wallpaper dimensions
+    const phoneWidth = 1080;
+    const phoneHeight = 2340;
+
+    phoneCanvas.width = phoneWidth;
+    phoneCanvas.height = phoneHeight;
+
+    if (phoneCtx) {
+      phoneCtx.fillStyle = "#000000";
+      phoneCtx.fillRect(0, 0, phoneWidth, phoneHeight);
+
+      const phoneImg = new window.Image();
+      phoneImg.onload = () => {
+        const padding = phoneWidth < phoneHeight ? 100 : 200;
+        const maxWidth = phoneWidth - padding * 2;
+        const maxHeight = phoneHeight - padding * 2;
+
+        const isLaptop = phoneWidth > phoneHeight;
+        const scaleRatio = isLaptop ? 0.4 : 0.3;
+        let drawWidth = phoneImg.width * scaleRatio;
+        let drawHeight = phoneImg.height * scaleRatio;
+
+        const scaleX = maxWidth / drawWidth;
+        const scaleY = maxHeight / drawHeight;
+        const scale = Math.min(scaleX, scaleY, 1);
+
+        drawWidth = drawWidth * scale;
+        drawHeight = drawHeight * scale;
+
+        const x = (phoneWidth - drawWidth) / 2;
+        const y = (phoneHeight - drawHeight) / 2;
+
+        phoneCtx.drawImage(phoneImg, x, y, drawWidth, drawHeight);
+        setPhoneWallpaperUrl(phoneCanvas.toDataURL());
+      };
+      phoneImg.src = dotArtDataUrl;
     }
   };
 
@@ -280,8 +370,9 @@ export default function Home() {
                     variant="outline"
                     onClick={() => {
                       setSelectedFile(null);
-                      setOriginalImageUrl("");
                       setPixelatedImageUrl("");
+                      setLaptopWallpaperUrl("");
+                      setPhoneWallpaperUrl("");
                       setIsProcessing(false);
                     }}>
                     Choose Different Image
@@ -290,82 +381,113 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            {/* Image Preview */}
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Original */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Original</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {originalImageUrl && (
-                    // Using img element for blob URLs which can't be optimized by Next.js Image
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={originalImageUrl}
-                      alt="Original"
-                      className="w-full h-auto max-h-64 object-contain rounded-lg border"
-                    />
-                  )}
-                </CardContent>
-              </Card>
+            {/* Wallpaper Preview */}
+            <div className="space-y-6">
+              <div className="space-y-8">
+                {/* Laptop Wallpaper Preview */}
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h4 className="text-lg font-medium">Laptop Wallpaper</h4>
+                    <p className="text-sm text-muted-foreground">3840x2400</p>
+                  </div>
 
-              {/* Dot Art */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Dot Art</CardTitle>
-                </CardHeader>
-                <CardContent>
                   {isProcessing ? (
-                    <div className="flex items-center justify-center h-64">
+                    <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
                       <div className="text-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
                         <p className="text-sm text-muted-foreground">
-                          Converting to dot art...
+                          Generating preview...
                         </p>
                       </div>
                     </div>
-                  ) : pixelatedImageUrl ? (
-                    // Using img element for blob URLs which can't be optimized by Next.js Image
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={pixelatedImageUrl}
-                      alt="Dot Art"
-                      className="w-full h-auto max-h-64 object-contain rounded-lg border"
-                    />
-                  ) : null}
-                </CardContent>
-              </Card>
-            </div>
+                  ) : laptopWallpaperUrl ? (
+                    <div className="relative group">
+                      {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={laptopWallpaperUrl}
+                        alt="Laptop Wallpaper Preview"
+                        className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
+                      />
 
-            {/* Download Section */}
-            {pixelatedImageUrl && !isProcessing && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Download Wallpapers</CardTitle>
-                  <CardDescription>
-                    Your dot art will be centered on a black background
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                      {/* Hover Download Button - Desktop */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
+                        <Button
+                          onClick={() => generateWallpaper(3840, 2400)}
+                          variant={"outline"}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
+                          size="lg">
+                          <Download className="w-5 h-5 mr-2" />
+                          Download Laptop Wallpaper
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* Mobile Download Button */}
+                  {laptopWallpaperUrl && (
                     <Button
                       onClick={() => generateWallpaper(3840, 2400)}
-                      className="w-full">
+                      className="w-full md:hidden">
                       <Download className="w-4 h-4 mr-2" />
-                      Laptop Wallpaper (3840x2400)
+                      Download Laptop Wallpaper
                     </Button>
+                  )}
+                </div>
+
+                {/* Phone Wallpaper Preview */}
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h4 className="text-lg font-medium">Phone Wallpaper</h4>
+                    <p className="text-sm text-muted-foreground">1080x2340</p>
+                  </div>
+
+                  {isProcessing ? (
+                    <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
+                      <div className="text-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                        <p className="text-sm text-muted-foreground">
+                          Generating preview...
+                        </p>
+                      </div>
+                    </div>
+                  ) : phoneWallpaperUrl ? (
+                    <div className="relative group">
+                      {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={phoneWallpaperUrl}
+                        alt="Phone Wallpaper Preview"
+                        className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
+                      />
+
+                      {/* Hover Download Button - Desktop */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
+                        <Button
+                          onClick={() => generateWallpaper(1080, 2340)}
+                          variant="outline"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
+                          size="lg">
+                          <Download className="w-5 h-5 mr-2" />
+                          Download Phone Wallpaper
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* Mobile Download Button */}
+                  {phoneWallpaperUrl && (
                     <Button
                       onClick={() => generateWallpaper(1080, 2340)}
                       variant="outline"
-                      className="w-full">
+                      className="w-full md:hidden">
                       <Download className="w-4 h-4 mr-2" />
-                      Phone Wallpaper (1080x2340)
+                      Download Phone Wallpaper
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
