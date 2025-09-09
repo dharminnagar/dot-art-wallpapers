@@ -287,12 +287,9 @@ export default function Home() {
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            Dot Art Wallpaper Generator
+          <h1 className="text-4xl font-bold mb-2 font-mono">
+            Transform your Images into Wallpapers
           </h1>
-          <p className="text-muted-foreground">
-            Transform your images into dot art wallpapers
-          </p>
         </div>
 
         {/* Upload Section */}
