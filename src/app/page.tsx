@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import ImageUpload from "@/components/image-upload";
 
@@ -285,152 +284,163 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="container mx-auto max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2 font-mono">
-            Transform your Images into Wallpapers
-          </h1>
-        </div>
+        {!selectedFile ? (
+          /* Centered layout when no image is uploaded */
+          <div className="min-h-screen flex flex-col items-center justify-center -mt-4">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-2 font-mono">
+                Transform your Images into Wallpapers
+              </h1>
+            </div>
 
-        {/* Upload Section */}
-        {!selectedFile && (
-          <div className="mb-8 flex justify-center">
-            <ImageUpload
-              onFileSelect={handleFileSelect}
-              selectedFile={selectedFile}
-              onClear={() => {
-                setSelectedFile(null);
-                setPixelatedImageUrl("");
-                setLaptopWallpaperUrl("");
-                setPhoneWallpaperUrl("");
-                setIsProcessing(false);
-              }}
-            />
-          </div>
-        )}
-
-        {/* Processing & Preview Section */}
-        {selectedFile && (
-          <div className="space-y-6">
-            {/* Reset Button */}
+            {/* Upload Section */}
             <div className="flex justify-center">
-              <Button
-                variant="outline"
-                onClick={() => {
+              <ImageUpload
+                onFileSelect={handleFileSelect}
+                selectedFile={selectedFile}
+                onClear={() => {
                   setSelectedFile(null);
                   setPixelatedImageUrl("");
                   setLaptopWallpaperUrl("");
                   setPhoneWallpaperUrl("");
                   setIsProcessing(false);
-                }}>
-                Choose Different Image
-              </Button>
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Normal layout when image is uploaded */
+          <div>
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-2 font-mono">
+                Transform your Images into Wallpapers
+              </h1>
             </div>
 
-            {/* Wallpaper Preview */}
+            {/* Processing & Preview Section */}
             <div className="space-y-6">
-              <div className="space-y-8">
-                {/* Laptop Wallpaper Preview */}
-                <div className="space-y-3">
-                  <div className="text-center">
-                    <h4 className="text-lg font-medium">Laptop Wallpaper</h4>
-                    <p className="text-sm text-muted-foreground">3840x2400</p>
+              {/* Reset Button */}
+              <div className="flex justify-center">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setPixelatedImageUrl("");
+                    setLaptopWallpaperUrl("");
+                    setPhoneWallpaperUrl("");
+                    setIsProcessing(false);
+                  }}>
+                  Choose Different Image
+                </Button>
+              </div>
+
+              {/* Wallpaper Preview */}
+              <div className="space-y-6">
+                <div className="space-y-8">
+                  {/* Laptop Wallpaper Preview */}
+                  <div className="space-y-3">
+                    <div className="text-center">
+                      <h4 className="text-lg font-medium">Laptop Wallpaper</h4>
+                      <p className="text-sm text-muted-foreground">3840x2400</p>
+                    </div>
+
+                    {isProcessing ? (
+                      <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
+                        <div className="text-center">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                          <p className="text-sm text-muted-foreground">
+                            Generating preview...
+                          </p>
+                        </div>
+                      </div>
+                    ) : laptopWallpaperUrl ? (
+                      <div className="relative group">
+                        {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={laptopWallpaperUrl}
+                          alt="Laptop Wallpaper Preview"
+                          className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
+                        />
+
+                        {/* Hover Download Button - Desktop */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
+                          <Button
+                            onClick={() => generateWallpaper(3840, 2400)}
+                            variant={"outline"}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
+                            size="lg">
+                            <Download className="w-5 h-5 mr-2" />
+                            Download Laptop Wallpaper
+                          </Button>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {/* Mobile Download Button */}
+                    {laptopWallpaperUrl && (
+                      <Button
+                        onClick={() => generateWallpaper(3840, 2400)}
+                        className="w-full md:hidden">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Laptop Wallpaper
+                      </Button>
+                    )}
                   </div>
 
-                  {isProcessing ? (
-                    <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-                      <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                        <p className="text-sm text-muted-foreground">
-                          Generating preview...
-                        </p>
-                      </div>
+                  {/* Phone Wallpaper Preview */}
+                  <div className="space-y-3">
+                    <div className="text-center">
+                      <h4 className="text-lg font-medium">Phone Wallpaper</h4>
+                      <p className="text-sm text-muted-foreground">1080x2340</p>
                     </div>
-                  ) : laptopWallpaperUrl ? (
-                    <div className="relative group">
-                      {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={laptopWallpaperUrl}
-                        alt="Laptop Wallpaper Preview"
-                        className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
-                      />
 
-                      {/* Hover Download Button - Desktop */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
-                        <Button
-                          onClick={() => generateWallpaper(3840, 2400)}
-                          variant={"outline"}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
-                          size="lg">
-                          <Download className="w-5 h-5 mr-2" />
-                          Download Laptop Wallpaper
-                        </Button>
+                    {isProcessing ? (
+                      <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
+                        <div className="text-center">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                          <p className="text-sm text-muted-foreground">
+                            Generating preview...
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ) : null}
+                    ) : phoneWallpaperUrl ? (
+                      <div className="relative group">
+                        {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={phoneWallpaperUrl}
+                          alt="Phone Wallpaper Preview"
+                          className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
+                        />
 
-                  {/* Mobile Download Button */}
-                  {laptopWallpaperUrl && (
-                    <Button
-                      onClick={() => generateWallpaper(3840, 2400)}
-                      className="w-full md:hidden">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Laptop Wallpaper
-                    </Button>
-                  )}
-                </div>
+                        {/* Hover Download Button - Desktop */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
+                          <Button
+                            onClick={() => generateWallpaper(1080, 2340)}
+                            variant="outline"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
+                            size="lg">
+                            <Download className="w-5 h-5 mr-2" />
+                            Download Phone Wallpaper
+                          </Button>
+                        </div>
+                      </div>
+                    ) : null}
 
-                {/* Phone Wallpaper Preview */}
-                <div className="space-y-3">
-                  <div className="text-center">
-                    <h4 className="text-lg font-medium">Phone Wallpaper</h4>
-                    <p className="text-sm text-muted-foreground">1080x2340</p>
+                    {/* Mobile Download Button */}
+                    {phoneWallpaperUrl && (
+                      <Button
+                        onClick={() => generateWallpaper(1080, 2340)}
+                        variant="outline"
+                        className="w-full md:hidden">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Phone Wallpaper
+                      </Button>
+                    )}
                   </div>
-
-                  {isProcessing ? (
-                    <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-                      <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                        <p className="text-sm text-muted-foreground">
-                          Generating preview...
-                        </p>
-                      </div>
-                    </div>
-                  ) : phoneWallpaperUrl ? (
-                    <div className="relative group">
-                      {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={phoneWallpaperUrl}
-                        alt="Phone Wallpaper Preview"
-                        className="w-full rounded-lg border shadow-lg transition-all duration-300 group-hover:shadow-xl object-contain h-[500px]"
-                      />
-
-                      {/* Hover Download Button - Desktop */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg hidden md:flex items-center justify-center">
-                        <Button
-                          onClick={() => generateWallpaper(1080, 2340)}
-                          variant="outline"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-105 bg-white/90 hover:bg-white"
-                          size="lg">
-                          <Download className="w-5 h-5 mr-2" />
-                          Download Phone Wallpaper
-                        </Button>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {/* Mobile Download Button */}
-                  {phoneWallpaperUrl && (
-                    <Button
-                      onClick={() => generateWallpaper(1080, 2340)}
-                      variant="outline"
-                      className="w-full md:hidden">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Phone Wallpaper
-                    </Button>
-                  )}
                 </div>
               </div>
             </div>
