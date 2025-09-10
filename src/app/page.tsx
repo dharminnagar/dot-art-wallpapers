@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Github } from "lucide-react";
 import ImageUpload from "@/components/image-upload";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import { cn } from "@/lib/utils";
@@ -295,27 +295,52 @@ export default function Home() {
         {!selectedFile ? (
           /* Centered layout when no image is uploaded */
           <div className="min-h-screen flex flex-col items-center justify-center -mt-4">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold mb-2">
-                Transform your Images into Wallpapers
-              </h1>
+            <div className="flex-1 flex flex-col items-center justify-center">
+              {/* Header */}
+              <div className="text-center mb-8">
+                <h1 className="text-4xl font-bold mb-2">
+                  Transform your Images into Wallpapers
+                </h1>
+              </div>
+
+              {/* Upload Section */}
+              <div className="flex justify-center">
+                <ImageUpload
+                  onFileSelect={handleFileSelect}
+                  selectedFile={selectedFile}
+                  onClear={() => {
+                    setSelectedFile(null);
+                    setPixelatedImageUrl("");
+                    setLaptopWallpaperUrl("");
+                    setPhoneWallpaperUrl("");
+                    setIsProcessing(false);
+                  }}
+                />
+              </div>
             </div>
 
-            {/* Upload Section */}
-            <div className="flex justify-center">
-              <ImageUpload
-                onFileSelect={handleFileSelect}
-                selectedFile={selectedFile}
-                onClear={() => {
-                  setSelectedFile(null);
-                  setPixelatedImageUrl("");
-                  setLaptopWallpaperUrl("");
-                  setPhoneWallpaperUrl("");
-                  setIsProcessing(false);
-                }}
-              />
-            </div>
+            {/* Footer for initial state */}
+            <footer className="py-8 w-full">
+              <div className="flex flex-col items-center space-y-4">
+                <div className="flex items-center space-x-6">
+                  <a
+                    href="https://x.com/dharmin"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    Made with ❤️ by @dharmin
+                  </a>
+                  <a
+                    href="https://github.com/dharminnagar/dot-art-wallpapers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="View source on GitHub">
+                    <Github className="w-5 h-5" />
+                  </a>
+                </div>
+              </div>
+            </footer>
           </div>
         ) : (
           /* Normal layout when image is uploaded */
@@ -451,6 +476,36 @@ export default function Home() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Footer */}
+        {selectedFile && (
+          <footer className="mt-16 py-8 border-t border-border/20">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="flex items-center space-x-6">
+                <div>
+                  <span className="text-sm text-muted-foreground">
+                    Made with ❤️ by{" "}
+                  </span>
+                  <a
+                    href="https://x.com/dharmin"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-5 transition-colors">
+                    @dharmin
+                  </a>
+                </div>
+                <a
+                  href="https://github.com/dharminnagar/dot-art-wallpapers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="View source on GitHub">
+                  <Github className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </footer>
         )}
       </div>
     </div>
