@@ -328,7 +328,7 @@ export default function Home() {
                       Made with ❤️ by{" "}
                     </span>
                     <a
-                      href="https://x.com/dharmin"
+                      href="https://x.com/dharminnagar"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-5 transition-colors">
@@ -493,11 +493,11 @@ export default function Home() {
                     Made with ❤️ by{" "}
                   </span>
                   <a
-                    href="https://x.com/dharmin"
+                    href="https://x.com/dharminnagar"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-5 transition-colors">
-                    @dharmin
+                    @dharminnagar
                   </a>
                 </div>
                 <a
