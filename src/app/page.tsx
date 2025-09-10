@@ -336,7 +336,7 @@ export default function Home() {
                     </a>
                   </div>
                   <a
-                    href="https://github.com/dharminnagar/dot-art-wallpapers"
+                    href="https://github.com/dharminnagar/dot-wallpapers"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-foreground transition-colors"
@@ -501,7 +501,7 @@ export default function Home() {
                   </a>
                 </div>
                 <a
-                  href="https://github.com/dharminnagar/dot-art-wallpapers"
+                  href="https://github.com/dharminnagar/dot-wallpapers"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground transition-colors"
