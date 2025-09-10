@@ -307,7 +307,7 @@ export default function Home() {
               <div className="flex justify-center">
                 <ImageUpload
                   onFileSelect={handleFileSelect}
-                  selectedFile={selectedFile}
+                  selectedFile={null}
                   onClear={() => {
                     setSelectedFile(null);
                     setPixelatedImageUrl("");
