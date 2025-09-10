@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import ImageUpload from "@/components/image-upload";
+import { DotPattern } from "@/components/magicui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -282,8 +284,16 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="container mx-auto max-w-4xl">
+    <div className="relative bg-background p-4 overflow-hidden">
+      <DotPattern
+        glow={true}
+        className={cn(
+          "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+          "opacity-30",
+          "fixed inset-0 w-full h-full"
+        )}
+      />
+      <div className="relative z-10 container mx-auto max-w-4xl min-h-screen">
         {!selectedFile ? (
           /* Centered layout when no image is uploaded */
           <div className="min-h-screen flex flex-col items-center justify-center -mt-4">
