@@ -289,7 +289,7 @@ export default function Home() {
           <div className="min-h-screen flex flex-col items-center justify-center -mt-4">
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold mb-2 font-mono">
+              <h1 className="text-4xl font-bold mb-2">
                 Transform your Images into Wallpapers
               </h1>
             </div>
@@ -314,7 +314,7 @@ export default function Home() {
           <div>
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold mb-2 font-mono">
+              <h1 className="text-4xl font-bold mb-2">
                 Transform your Images into Wallpapers
               </h1>
             </div>

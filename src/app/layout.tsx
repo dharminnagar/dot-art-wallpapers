@@ -9,22 +9,22 @@ const kodeMono = Kode_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pixel Wallpaper Generator",
+  title: "Dot Art Wallpaper Generator",
   description:
-    "Generate customised stunning pixel art wallpapers by uploading your images.",
-  keywords: ["pixel art", "wallpaper", "generator", "image processing"],
+    "Generate customised stunning dot art wallpapers by uploading your images.",
+  keywords: ["dot art", "wallpaper", "generator", "image processing"],
   authors: [{ name: "Your Name" }],
   openGraph: {
-    title: "Pixel Wallpaper Generator",
+    title: "Dot Art Wallpaper Generator",
     description:
-      "Generate customised stunning pixel art wallpapers by uploading your images.",
+      "Generate customised stunning dot art wallpapers by uploading your images.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pixel Wallpaper Generator",
+    title: "Dot Art Wallpaper Generator",
     description:
-      "Generate customised stunning pixel art wallpapers by uploading your images.",
+      "Generate customised stunning dot art wallpapers by uploading your images.",
   },
 };
 
@@ -35,7 +35,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${kodeMono.variable} antialiased`}>
+      <body
+        className={`${kodeMono.variable} ${kodeMono.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
