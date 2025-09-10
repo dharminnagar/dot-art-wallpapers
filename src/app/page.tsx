@@ -43,7 +43,6 @@ export default function Home() {
       img.onload = () => {
         if (!ctx) return;
 
-        // Create a temporary canvas to get image data
         const tempCanvas = document.createElement("canvas");
         const tempCtx = tempCanvas.getContext("2d");
         if (!tempCtx) return;
@@ -52,37 +51,32 @@ export default function Home() {
         tempCanvas.height = img.height;
         tempCtx.drawImage(img, 0, 0);
 
-        // Get image data for analysis
         const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
 
-        // Settings for dot art
-        const dotSize = 20; // Increased spacing between dots
-        const fontSize = 28; // Much larger font size for bigger dots
-        const dotChar = "●"; // Larger filled circle character instead of bullet
+        const dotSize = 20;
+        const fontSize = 28;
+        const dotChar = "●";
 
         // Calculate output dimensions maintaining aspect ratio
         const cols = Math.ceil(img.width / dotSize);
         const rows = Math.ceil(img.height / dotSize);
         const outputWidth = cols * dotSize;
-        const outputHeight = rows * dotSize; // Use dotSize for height too
+        const outputHeight = rows * dotSize;
 
         // Set canvas size
         canvas.width = outputWidth;
         canvas.height = outputHeight;
 
-        // Set canvas style for text rendering
-        ctx.fillStyle = "#000000"; // Black background
+        ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.font = `${fontSize}px monospace`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        // Process image in blocks and convert to dot art
         for (let y = 0; y < img.height; y += dotSize) {
           for (let x = 0; x < img.width; x += dotSize) {
-            // Sample pixels in current block
             let totalBrightness = 0;
             let totalAlpha = 0;
             let pixelCount = 0;
@@ -105,6 +99,18 @@ export default function Home() {
                 const a = data[pixelIndex + 3];
 
                 // Calculate brightness (luminance)
+                // The formula `const brightness = r * 0.299 + g * 0.587 + b * 0.114;` calculates the **perceived brightness** (luminance) of a color using the standard RGB to grayscale conversion coefficients.
+
+                // Here's why these specific weights are used:
+
+                // 1. **Human eye sensitivity**: Our eyes are not equally sensitive to all colors:
+                //   - **Green (0.587)**: Most sensitive - contributes most to perceived brightness
+                //   - **Red (0.299)**: Moderately sensitive
+                //   - **Blue (0.114)**: Least sensitive - contributes least to brightness
+
+                // 3. **Better dot placement**: Instead of using simple RGB averaging `(r + g + b) / 3`, this formula gives a more accurate representation of how bright a pixel appears to humans, resulting in better dot art that preserves the visual contrast of the original image.
+
+                // For example, a bright green pixel will correctly appear brighter than a bright blue pixel of the same RGB intensity, which matches how we actually perceive these colors.
                 const brightness = r * 0.299 + g * 0.587 + b * 0.114;
                 totalBrightness += brightness;
                 totalAlpha += a;
@@ -124,7 +130,7 @@ export default function Home() {
               ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
               const dotX = (x / dotSize) * dotSize + dotSize / 2;
-              const dotY = (y / dotSize) * dotSize + dotSize / 2; // Use dotSize instead of fontSize
+              const dotY = (y / dotSize) * dotSize + dotSize / 2;
 
               ctx.fillText(dotChar, dotX, dotY);
             }
@@ -133,7 +139,6 @@ export default function Home() {
 
         setPixelatedImageUrl(canvas.toDataURL());
 
-        // Generate actual wallpapers for preview
         generateActualWallpapers(canvas.toDataURL());
 
         setIsProcessing(false);
@@ -147,11 +152,9 @@ export default function Home() {
   };
 
   const generateActualWallpapers = (dotArtDataUrl: string) => {
-    // Generate actual laptop wallpaper (full size)
     const laptopCanvas = document.createElement("canvas");
     const laptopCtx = laptopCanvas.getContext("2d");
 
-    // Use actual wallpaper dimensions
     const laptopWidth = 3840;
     const laptopHeight = 2400;
 
@@ -189,11 +192,9 @@ export default function Home() {
       laptopImg.src = dotArtDataUrl;
     }
 
-    // Generate actual phone wallpaper (full size)
     const phoneCanvas = document.createElement("canvas");
     const phoneCtx = phoneCanvas.getContext("2d");
 
-    // Use actual wallpaper dimensions
     const phoneWidth = 1080;
     const phoneHeight = 2340;
 
@@ -241,7 +242,6 @@ export default function Home() {
     canvas.width = width;
     canvas.height = height;
 
-    // Fill with black background
     if (ctx) {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, width, height);
@@ -249,20 +249,18 @@ export default function Home() {
       const img = new window.Image();
       img.onload = () => {
         // Calculate centered position with padding
-        const padding = width < height ? 100 : 200; // More padding for mobile
+        const padding = width < height ? 100 : 200;
         const maxWidth = width - padding * 2;
         const maxHeight = height - padding * 2;
 
-        // Scale down to make image smaller - different sizes for laptop vs mobile
         const isLaptop = width > height; // Laptop wallpapers are wider than tall
         const scaleRatio = isLaptop ? 0.4 : 0.3; // 40% for laptop, 30% for mobile
         let drawWidth = img.width * scaleRatio;
         let drawHeight = img.height * scaleRatio;
 
-        // Then scale down further if still too large for the space
         const scaleX = maxWidth / drawWidth;
         const scaleY = maxHeight / drawHeight;
-        const scale = Math.min(scaleX, scaleY, 1); // Don't scale up
+        const scale = Math.min(scaleX, scaleY, 1);
 
         drawWidth = drawWidth * scale;
         drawHeight = drawHeight * scale;
@@ -367,7 +365,6 @@ export default function Home() {
                       </div>
                     ) : laptopWallpaperUrl ? (
                       <div className="relative group">
-                        {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={laptopWallpaperUrl}
@@ -418,7 +415,6 @@ export default function Home() {
                       </div>
                     ) : phoneWallpaperUrl ? (
                       <div className="relative group">
-                        {/* Using img element for blob URLs which can't be optimized by Next.js Image */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={phoneWallpaperUrl}
