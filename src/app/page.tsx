@@ -320,16 +320,21 @@ export default function Home() {
             </div>
 
             {/* Footer for initial state */}
-            <footer className="py-8 w-full">
+            <footer className="mt-16 py-8 border-t border-border/20">
               <div className="flex flex-col items-center space-y-4">
                 <div className="flex items-center space-x-6">
-                  <a
-                    href="https://x.com/dharmin"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Made with ❤️ by @dharmin
-                  </a>
+                  <div>
+                    <span className="text-sm text-muted-foreground">
+                      Made with ❤️ by{" "}
+                    </span>
+                    <a
+                      href="https://x.com/dharmin"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-5 transition-colors">
+                      @dharmin
+                    </a>
+                  </div>
                   <a
                     href="https://github.com/dharminnagar/dot-art-wallpapers"
                     target="_blank"
