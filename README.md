@@ -1,8 +1,8 @@
-# 🎨 Dot Art Wallpapers
+# Dot Art Wallpapers
 
 Transform your images into stunning dot art wallpapers optimized for both desktop and mobile devices. This web application uses advanced image processing algorithms to convert your photos into beautiful monochromatic dot patterns, perfect for minimalist wallpapers.
 
-## ✨ Features
+## Features
 
 - **Smart Image Processing**: Converts any image into artistic dot patterns using brightness-based sampling
 - **Multi-Device Support**: Generates wallpapers optimized for both laptops (3840×2400) and phones (1080×2340)
@@ -11,7 +11,7 @@ Transform your images into stunning dot art wallpapers optimized for both deskto
 - **Intelligent Scaling**: Automatically scales and centers artwork for optimal wallpaper composition
 - **Monochrome Aesthetic**: Creates elegant white-on-black dot art perfect for any device
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -51,7 +51,7 @@ bun dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 🎯 How It Works
+## How It Works
 
 1. **Upload**: Drag and drop or select an image file (PNG/JPG, max 10MB)
 2. **Processing**: The app analyzes your image using brightness sampling to create dot patterns
@@ -67,7 +67,7 @@ The application uses a sophisticated dot art generation process:
 - **Transparency Handling**: Preserves transparency information for better results with transparent images
 - **Canvas Rendering**: Uses HTML5 Canvas for high-performance image processing
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/)
 - **Language**: TypeScript
@@ -77,7 +77,7 @@ The application uses a sophisticated dot art generation process:
 - **Theme**: [next-themes](https://github.com/pacocoursey/next-themes) for dark/light mode
 - **Code Quality**: ESLint, Prettier, Husky, lint-staged
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -95,7 +95,7 @@ src/
     └── utils.ts             # Utility functions and class name helpers
 ```
 
-## 🎨 Features in Detail
+## Features in Detail
 
 ### Image Upload
 
@@ -119,7 +119,7 @@ src/
 - Mobile-optimized download buttons
 - Clean, minimalist interface
 
-## 🔧 Configuration
+## Configuration
 
 ### Supported Image Formats
 
@@ -135,7 +135,7 @@ src/
 - **Background**: Pure black (#000000)
 - **Dots**: White with varying opacity
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -143,11 +143,11 @@ src/
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🔗 Links
+## Links
 
 - [Live Demo](https://dot-art-wallpapers.vercel.app)
 - [GitHub Repository](https://github.com/dharminnagar/dot-art-wallpapers)
