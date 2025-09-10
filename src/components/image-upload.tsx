@@ -37,10 +37,6 @@ export default function ImageUpload({
   return (
     <div className="sm:mx-auto sm:max-w-lg flex items-center justify-center p-6 w-full max-w-lg">
       <div className="w-full">
-        <h3 className="text-lg font-semibold text-foreground mb-4">
-          Upload Your Image
-        </h3>
-
         {!selectedFile ? (
           <div
             onDrop={handleDrop}
