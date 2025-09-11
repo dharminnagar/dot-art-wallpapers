@@ -23,8 +23,8 @@ Transform your images into stunning dot art wallpapers optimized for both deskto
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/dharminnagar/dot-art-wallpapers.git
-cd dot-art-wallpapers
+git clone https://github.com/dharminnagar/dot-wallpapers.git
+cd dot-wallpapers
 ```
 
 2. Install dependencies:
